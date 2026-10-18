@@ -16,7 +16,7 @@ Android WebView ou navegador
                  estáticos     Express + Prisma + PostgreSQL
 ```
 
-Pastas previstas: features para a jornada e `shared/ui` em design atômico (átomos, moléculas, organismos, templates). Primitivos de comportamento acessível vêm do Radix UI; o visual é do Mindcheck. Detalhe em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+As features organizam a jornada. Os componentes de interface ficam diretamente em `src`, separados em átomos, moléculas, organismos e modelos. Primitivos de comportamento acessível vêm do Radix UI; o visual é do Mindcheck. Detalhe em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ```text
 src/
@@ -27,14 +27,10 @@ src/
     questionnaires/    # instrumentos (não calcula score no app)
     dashboard/
     history/
-  shared/
-    api/
-    lib/
-    ui/
-      atoms/
-      molecules/
-      organisms/
-      templates/
+  atomos/
+  moleculas/
+  organismos/
+  modelos/
 ```
 
 A pontuação do questionário **não** roda no frontend. O app envia respostas; o backend soma e devolve faixa + texto orientativo.

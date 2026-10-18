@@ -6,7 +6,7 @@ Construir uma única interface React mobile-first para navegador e aplicativo An
 
 ## Organização
 
-O código de tela se divide em duas camadas: **features** (jornada e dados) e **`shared/ui`** (peças visuais reutilizáveis, em design atômico).
+O código de tela se divide em duas camadas: **features** (jornada e dados) e componentes visuais reutilizáveis, organizados por nível atômico diretamente em `src`.
 
 ```text
 src/
@@ -19,17 +19,13 @@ src/
     history/
     referrals/
     admin/
-  shared/
-    api/
-    lib/
-    ui/
-      atoms/
-      molecules/
-      organisms/
-      templates/
+  atomos/
+  moleculas/
+  organismos/
+  modelos/
 ```
 
-A página de uma feature monta o fluxo, chama a API e preenche um template. Ela não redefine botão, campo, diálogo nem layout.
+A página de uma feature monta o fluxo, chama a API e compõe os componentes. Ela não redefine botão, campo, diálogo nem layout. A pasta `modelos` fica reservada a esqueletos de tela reutilizáveis; ainda não há modelos implementados.
 
 ## Design atômico
 
@@ -37,17 +33,17 @@ Cada peça tem um único nível. O nível de baixo não conhece o de cima.
 
 | Nível | Pasta | Responsabilidade | Exemplos |
 | --- | --- | --- | --- |
-| Átomo | `shared/ui/atoms` | Um controle, com estilo Mindcheck | `Button`, `TextInput`, `Label`, `Icon` |
-| Molécula | `shared/ui/molecules` | Poucos átomos com uma função | `FormField`, `EmptyState`, `ErrorNotice` |
-| Organismo | `shared/ui/organisms` | Bloco de interface ainda genérico | `AppBar`, `ConfirmDialog`, `ResultCard` |
-| Template | `shared/ui/templates` | Estrutura da tela, com espaços para conteúdo | `MobilePage`, `AuthShell` |
+| Átomo | `atomos` | Um controle, com estilo Mindcheck | `Botao`, `BotaoIcone`, `CampoTexto`, `AreaTexto` |
+| Molécula | `moleculas` | Poucos átomos com uma função | `CampoFormulario`, `Cartao`, `Aviso`, `EstadoVazio` |
+| Organismo | `organismos` | Bloco de interface ainda genérico | `Modal`, `Gaveta`, `AvisoFlutuante` |
+| Modelo | `modelos` | Estrutura da tela, com espaços para conteúdo | casca mobile, casca de login |
 | Página | `features/<domínio>` | Dados, cópia do domínio e navegação | check-in, questionário, dashboard |
 
 Regras de dependência:
 
-- Átomo importa só estilo e, quando precisar, um primitivo Radix. Não importa molécula, organismo, feature nem `shared/api`.
-- Molécula importa átomos. Organismo importa átomos e moléculas. Template importa os níveis abaixo.
-- Feature importa `shared/ui` e `shared/api`. Não importa `@radix-ui` direto.
+- Átomo importa só estilo e, quando precisar, um primitivo Radix. Não importa molécula, organismo, feature nem API.
+- Molécula importa átomos. Organismo importa átomos e moléculas. Modelo importa os níveis abaixo.
+- Feature importa os componentes e a API. Não importa `@radix-ui` direto.
 - Peça usada por uma única jornada fica na feature, composta com átomos e moléculas. Se uma segunda feature precisar da mesma peça, ela sobe para organismo.
 
 Estados de loading, vazio, erro e falta de conexão são moléculas ou organismos. A página usa essas peças; não copia o markup em cada tela.
@@ -60,7 +56,7 @@ O átomo ou a molécula Mindcheck envolve o primitivo e aplica o visual: cor, ti
 
 Controle com comportamento nativo suficiente (`button`, `a`, campo de texto) continua elemento HTML estilizado no átomo.
 
-Instalar só o primitivo que a tela precisa. A feature importa o componente Mindcheck (`ConfirmDialog`, `Tabs`), nunca o pacote Radix.
+Instalar só o primitivo que a tela precisa. A feature importa o componente Mindcheck (`Modal`, `Abas`), nunca o pacote Radix.
 
 ## Regras de interface
 
